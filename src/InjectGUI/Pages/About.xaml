@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Inject.Content.About"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <ScrollViewer>
+            <StackPanel MinWidth="200">
+                <TextBlock Margin="0,25,0,0" Text="InjectGUI v1.0 - Front facing user interface for injecting managed code into x86 or x64 unmanaged or managed applications.&#x0a;Copyright © 2013 Pero Matic" />
+                <TextBlock>Plan A Software - <Hyperlink RequestNavigate="PlanASoftware_RequestNavigate" NavigateUri="http://www.planasoftware.com">www.planasoftware.com</Hyperlink></TextBlock>
+                <TextBlock TextWrapping="Wrap" Text="&#x0a;This app is for testing the injection of the .net runtime into remote processes. An example assembly was included with the documentation and is called InjectExample.&#x0a;" />
+                <TextBlock Text="This app is dedicated to my brother Milan." />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="Inject.Pages.Home"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="443" d:DesignWidth="739"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid Style="{StaticResource ContentRoot}">
+        <ScrollViewer>
+            <StackPanel MinWidth="700">
+                <WrapPanel Margin="0,0,0,3">
+                    <TextBlock Text="1.  pick a process to inject" Margin="0,0,8,0" />
+                    <mui:ModernButton Click="RefreshProcessList_Click" ToolTip="refresh the list of running processes" IconData="F1 M 24,13 C 27.1521,13 29.9945,14.3258 32,16.4501 L 32,11 35,14 35,22 27,22 24,19 29.5903,19 C 28.217,17.4656 26.2212,16.5 24,16.5 20.1969,16.5 17.055,19.3306 16.5661,23 L 13.0448,23 C 13.5501,17.3935 18.262,13 24,13 M 24,31.5 C 27.8031,31.5 30.945,28.6694 31.4339,25 L 34.9552,25 C 34.4499,30.6065 29.738,35 24,35 20.8479,35 18.0055,33.6742 16,31.5499 L 16,37 13,34 13,26 21,26 24,29 18.4097,29 C 19.783,30.5344 21.7787,31.5 24,31.5 Z" />
+                </WrapPanel>
+                <ComboBox ItemsSource="{Binding Wrapper.ProcessList}"
+                          DisplayMemberPath="DisplayName" 
+                          SelectedValuePath="Id" 
+                          SelectedValue="{Binding Wrapper.ProcessId}" 
+                          HorizontalAlignment="Left" 
+                          IsSynchronizedWithCurrentItem="True"
+                          Width="700" />
+                <WrapPanel Margin="0,40,0,3">
+                    <TextBlock Text="2.  select the .net assembly you want injected into process [ " />
+                    <TextBlock DataContext="{Binding Wrapper.ProcessList}" Text="{Binding Id}" FontStyle="Italic" />
+                    <TextBlock Text=" " />
+                    <TextBlock DataContext="{Binding Wrapper.ProcessList}" Text="{Binding Name}" FontStyle="Italic" />
+                    <TextBlock Text=" ]" />
+                </WrapPanel>
+                <TextBox Text="{Binding Wrapper.ManagedFilename}" IsReadOnly="True" Width="700" HorizontalAlignment="Left" />
+                <Button HorizontalAlignment="Left" Margin="0,7,0,0" Click="BrowseAssembly_Click" ToolTip="browse the filesystem for a .net assembly">
+                    <WrapPanel>
+                        <Path Width="10" Height="15" Stretch="Fill" Fill="#FF000000" Data="F1 M 22,17L 41.25,17L 54,29.75L 54,54L 22,54L 22,17 Z M 26,21L 26,50L 50,50L 50,34L 37,34L 37,21L 26,21 Z M 41,22.25L 41,30L 48.75,30L 41,22.25 Z M 38,57C 39.6568,57 41,58.3431 41,60C 41,61.6569 39.6568,63 38,63C 36.3431,63 35,61.6569 35,60C 35,58.3431 36.3431,57 38,57 Z M 50,57C 51.6568,57 53,58.3431 53,60C 53,61.6569 51.6568,63 50,63C 48.3431,63 47,61.6569 47,60C 47,58.3431 48.3431,57 50,57 Z M 26,57C 27.6569,57 29,58.3431 29,60C 29,61.6569 27.6569,63 26,63C 24.3431,63 23,61.6569 23,60C 23,58.3431 24.3431,57 26,57 Z" />
+                        <TextBlock Text="  browse" />
+                    </WrapPanel>
+                </Button>
+                <WrapPanel Margin="0,40,0,3">
+                    <TextBlock Text="3.  select the method you want to inject"  Margin="0,0,8,0"  />
+                    <mui:ModernButton Click="ValidSignature_Click" IconData="F1 M 37.2083,49.0833C 39.3945,49.0833 41.1667,50.8555 41.1667,53.0417C 41.1667,55.2278 39.3945,57 37.2083,57C 35.0222,57 33.25,55.2278 33.25,53.0417C 33.25,50.8555 35.0222,49.0833 37.2083,49.0833 Z M 38,17.4167C 44.9956,17.4167 50.6666,21.9416 50.6666,28.5C 50.6666,30.875 49.0833,34.8333 45.9167,36.4167C 42.75,38 41.1667,40.1267 41.1667,42.75L 41.1667,45.9167L 33.25,45.9167L 33.25,43.5417C 33.25,38.1571 38,34.8333 39.5833,33.25C 42.75,30.0833 42.75,29.644 42.75,28.5C 42.75,25.8767 40.6233,23.75 38,23.75C 35.3766,23.75 33.25,25.8767 33.25,28.5L 33.25,30.875L 25.3333,30.875L 25.3333,29.2917C 25.3333,22.7333 31.0044,17.4167 38,17.4167 Z" />
+                </WrapPanel>
+                <ComboBox 
+                    ItemsSource="{Binding Wrapper.InjectableMethods}"
+                    SelectedValuePath="Name"
+                    SelectedValue="{Binding MethodName}"
+                    HorizontalAlignment="Left"  
+                    Width="700"
+                    IsSynchronizedWithCurrentItem="True"
+                    FontFamily="Consolas">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <!-- note: include empty style so that when combobox drop down is visible the highlighting
+                                       and colors look right for validation, just remove Combobox.ItemContainerStyle node -->
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock Foreground="Blue" Text="static int" />
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="(" /><TextBlock Foreground="#FF2B91AF" Text="String" />
+                                <TextBlock Text="{Binding ParameterName}" /><TextBlock Text=")" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="4.  enter an optional argument to pass in to the injected method" Margin="0,40,0,3" />                
+                <TextBox Text="{Binding Wrapper.Argument}" Width="700" HorizontalAlignment="Left" />
+                <WrapPanel Margin="0,40,0,0">
+                    <Button HorizontalAlignment="Left" Margin="0,0,8,0" Click="Inject_Click" ToolTip="inject the assembly into the process">
+                        <WrapPanel>
+                            <Path Width="15" Height="15" Stretch="Fill" Fill="#FF000000" Data="F1 M 20.2466,42.3184L 42.3184,20.2466C 46.0284,16.5366 52.0434,16.5366 55.7534,20.2466C 59.4634,23.9565 59.4634,29.9716 55.7534,33.6816L 33.6816,55.7534C 29.9716,59.4634 23.9566,59.4634 20.2466,55.7534C 16.5366,52.0434 16.5366,46.0284 20.2466,42.3184 Z M 34.6561,33.222L 42.7098,41.2757L 51.9642,32.0214C 54.1882,29.7974 54.5383,25.8415 52.3143,23.6175C 50.0903,21.3935 46.4845,21.3935 44.2605,23.6175L 34.6561,33.222 Z" />
+                            <TextBlock Text="  inject assembly" />
+                        </WrapPanel>
+                    </Button>
+                    <mui:ModernButton Click="CopyCmdLineToClipboard_Click" ToolTip="copy the injection cmd line to the clipboard" IconData="F1 M 23,54L 23,26C 23,24.3432 24.3431,23 26,23L 30.5001,22.9999C 30.5001,22.9999 31.4999,22.8807 31.4999,21.5C 31.4999,20.1193 33.1191,19 34.4998,19L 41.5001,19C 42.8809,19 44.5001,20.1193 44.5001,21.5C 44.5001,22.8807 45.4999,22.9999 45.4999,22.9999L 50,23.0001C 51.6569,23.0001 53,24.3432 53,26.0001L 53,54.0001C 53,55.6569 51.6568,57 50,57.0001L 26,57C 24.3431,57 23,55.6569 23,54 Z M 35.9997,22.0002C 34.619,22.0002 33.4997,23.1195 33.4997,24.5002C 33.4997,25.8809 32.5,27.0001 32.5,27.0001L 43.5,27.0001C 43.5,27.0001 42.5002,25.8809 42.5002,24.5002C 42.5002,23.1195 41.3809,22.0002 40.0002,22.0002L 35.9997,22.0002 Z M 28.5,30.0001L 30,26L 26,26L 26,54L 50,54L 50,26L 46,26.0001L 47.5,30.0001L 28.5,30.0001 Z" />
+                </WrapPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
